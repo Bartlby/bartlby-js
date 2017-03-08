@@ -13,6 +13,7 @@ const v1 = {
             var client = new net.Socket();
             var bench_start = new Date();
             var checkResult = {state: -1, output: "", bench: -1}
+            var tcp_out = "";
             client.connect(svc.server.port, svc.server.ip, function() {
                 client.write(svc.check.plugin + "|" + svc.check.params + "|\n");
             });
@@ -21,25 +22,22 @@ const v1 = {
               client.destroy();
             })
             client.on('data', function(data) {
-                if (data.toString().match(/^OS:/)) {
-                    //OS Banner
-                } else if (data.toString().match(/^PERF:/)) {
-                    var resp = data.toString();
-                    checkResult.performance_data = resp;
-                } else {
-                    //Actual Response - support multiline output
-                    var resp = data.toString();
-                    if(checkResult.state == -1) {
-                      var components = resp.split("|");
-                      checkResult.state = parseInt(components[0]);
-                      checkResult.output += components[1];
-                    } else {
-                      checkResult.output += resp;
-                    }
+                //Actual Response - support multiline output
+                var resp = data.toString();
+                tcp_out += resp.replace(/\n/, "") + "\n";
 
-                }
             });
             client.on('close', function() {
+                tcp_out.split("\n").forEach(function(line) {
+                  
+                  if (line.match(/^OS:/)) {
+                      //OS Banner
+                  } else if (line.match(/^PERF:/)) {
+                      checkResult.performance_data = line;
+                  } else {
+                      checkResult.output += line;
+                  }
+                })
                 checkResult.bench = { ms: new Date() - bench_start };
                 resolve(checkResult);
             });
