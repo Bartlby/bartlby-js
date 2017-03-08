@@ -24,6 +24,7 @@ const v1 = {
     },
     doCheck: function() {
         return new Promise(function(resolve, reject) {
+            var bench_start = new Date();
             var client = new net.Socket();
             var checkResult = {
                 state: -1,
@@ -73,6 +74,7 @@ const v1 = {
                 checkResult.performance_data = proxy.perf_handler;
             });
             client.on('close', function() {
+                checkResult.bench = { ms: new Date() - bench_start };
                 resolve(checkResult);
             });
             client.on('error', function(err) {

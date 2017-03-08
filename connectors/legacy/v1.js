@@ -11,7 +11,8 @@ const v1 = {
     doCheck: function() {
         return new Promise(function(resolve, reject) {
             var client = new net.Socket();
-            var checkResult = {state: -1, output: ""}
+            var bench_start = new Date();
+            var checkResult = {state: -1, output: "", bench: -1}
             client.connect(svc.server.port, svc.server.ip, function() {
                 client.write(svc.check.plugin + "|" + svc.check.params + "|\n");
             });
@@ -39,6 +40,7 @@ const v1 = {
                 }
             });
             client.on('close', function() {
+                checkResult.bench = { ms: new Date() - bench_start };
                 resolve(checkResult);
             });
             client.on('error', function(err) {
