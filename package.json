@@ -1,0 +1,15 @@
+{
+  "name": "bartlby",
+  "version": "0.0.9",
+  "description": "Bartlby System Monitor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "buffer-crc32": "^0.2.13",
+    "struct": "0.0.11"
+  }
+}
