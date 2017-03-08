@@ -1,10 +1,11 @@
 "use strict"
-var net = require('net');
-var tls = require('tls');
-var constants = require('constants');
-var Struct = require('struct');
-var crc32 = require('buffer-crc32');
-var svc = null;
+import net from 'net';
+import tls from 'tls';
+import constants from 'constants';
+import Struct from 'struct';
+import crc32 from 'buffer-crc32';
+
+let svc = null;
 
 const AgentPacket = Struct()
     .word32Ube('crc32_value')
@@ -16,37 +17,37 @@ const AgentPacket = Struct()
     .chars('perf_handler', 1024);
 
 const v1 = {
-    check: function(service) {
-        var self = this;
+    check(service) {
+        const self = this;
         svc = service;
         return Promise.resolve()
             .then(self.doCheck)
     },
-    doCheck: function() {
-        return new Promise(function(resolve, reject) {
-            var bench_start = new Date();
-            var client = new net.Socket();
-            var checkResult = {
+    doCheck() {
+        return new Promise((resolve, reject) => {
+            const bench_start = new Date();
+            let client = new net.Socket();
+            const checkResult = {
                 state: -1,
                 output: ""
-            }
+            };
             //Binary Payload
-            var OutPacket = AgentPacket;
+            const OutPacket = AgentPacket;
             OutPacket.allocate();
-            var context = tls.createSecureContext({
+            const context = tls.createSecureContext({
                 secureProtocol: "SSLv23_method",
                 honorCipherOrder: false,
                 secureOptions: constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3,
                 ciphers: "ADH",
-            })
+            });
             client = tls.connect(svc.server.port, svc.server.ip, {
                 minDHSize: 512,
                 rejectUnauthorized: false,
                 secureContext: context
-            }, function() {
-                var buf = OutPacket.buffer();
+            }, () => {
+                const buf = OutPacket.buffer();
                 buf.fill(0);
-                var proxy = OutPacket.fields;
+                const proxy = OutPacket.fields;
                 proxy.crc32_value = 0;
                 proxy.cmdline = svc.check.params;
                 proxy.plugin = svc.check.plugin;
@@ -54,34 +55,34 @@ const v1 = {
                 proxy.packet_type = 1
                 proxy.output = ""
                 proxy.exit_code = -1
-                var crc = crc32.unsigned(buf);
+                const crc = crc32.unsigned(buf);
 
                 proxy.crc32_value = crc;
 
                 client.write(buf)
             });
 
-            client.setTimeout(svc.check.timeout, function() {
+            client.setTimeout(svc.check.timeout, () => {
                 reject(new Error("Timeout"));
                 client.destroy();
             })
-            client.on('data', function(data) {
-                var InPacket =  AgentPacket;
+            client.on('data', data => {
+                const InPacket =  AgentPacket;
                 InPacket.setBuffer(data);
-                var proxy = InPacket.fields;
+                const proxy = InPacket.fields;
                 checkResult.state = proxy.exit_code;
                 checkResult.output = proxy.output;
                 checkResult.performance_data = proxy.perf_handler;
             });
-            client.on('close', function() {
+            client.on('close', () => {
                 checkResult.bench = { ms: new Date() - bench_start };
                 resolve(checkResult);
             });
-            client.on('error', function(err) {
+            client.on('error', err => {
                 reject(err);
             });
-        })
+        });
     }
 }
 
-module.exports = v1;
+export default v1;

@@ -1,5 +1,5 @@
-const v1 = require('./connectors/legacy/v1')
-const v2 = require('./connectors/legacy/v2')
+import v1 from "./connectors/legacy/v1"
+import v2 from "./connectors/legacy/v2"
 
 
 
@@ -17,12 +17,12 @@ const svc_obj = {
 
 
 var r = v1.check(svc_obj)
-    .then(function(result) {
+    .then(result => {
         console.log("AGENT V1:")
         console.log(result);
     })
-    .catch(function(error) {
-        console.log("Error: ", error.message)
+    .catch(({message}) => {
+        console.log("Error: ", message)
     });
 
 
@@ -39,10 +39,10 @@ const svc_obj_agent_v2 = {
 }
 
 var r = v2.check(svc_obj_agent_v2)
-    .then(function(result) {
+    .then(result => {
         console.log("AGENT V2: SSL")
         console.log(result);
     })
-    .catch(function(error) {
-        console.log("Error: ", error.message)
+    .catch(({message}) => {
+        console.log("Error: ", message)
     });

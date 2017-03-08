@@ -4,12 +4,20 @@
   "description": "Bartlby System Monitor",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node test.js --presets es2015,stage-2",
+    "startmon": "nodemon test.js --exec babel-node --presets es2015,stage-2"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "buffer-crc32": "^0.2.13",
     "struct": "0.0.11"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "nodemon": "^1.11.0"
   }
 }
