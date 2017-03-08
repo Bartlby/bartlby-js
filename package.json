@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "babel-node test.js --presets es2015,stage-2",
-    "startmon": "nodemon test.js --exec babel-node --presets es2015,stage-2"
+    "testmon": "nodemon src/test.js --exec babel-node --presets es2015,stage-2",
+    "build": "babel src -d dist --presets es2015,stage-2",
   },
   "author": "",
   "license": "ISC",
