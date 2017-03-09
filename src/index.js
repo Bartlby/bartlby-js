@@ -1,5 +1,34 @@
+import { debug } from 'debug'
+
+//Check Types
 import v1 from "./connectors/legacy/v1"
 import v2 from "./connectors/legacy/v2"
+
+import Scheduler from "./scheduler"
+import Boss from "./boss"
+
+// Logging
+const logger = debug("bartlby")
+
+var config = {
+  worker: 3
+}
+
+
+logger("Bartlby Init")
+const boss = new Boss();
+const sched = new Scheduler(boss);
+
+
+process.on('SIGINT', function() {
+    logger("Caught interrupt signal");
+    process.exit();
+});
+
+
+/*
+
+
 
 
 
@@ -18,11 +47,11 @@ const svc_obj = {
 
 var r = v1.check(svc_obj)
     .then(result => {
-        console.log("AGENT V1:")
-        console.log(result);
+        logger("AGENT V1:")
+        logger(result);
     })
     .catch(({message}) => {
-        console.log("Error: ", message)
+        logger("Error: ", message)
     });
 
 
@@ -40,9 +69,10 @@ const svc_obj_agent_v2 = {
 
 var r = v2.check(svc_obj_agent_v2)
     .then(result => {
-        console.log("AGENT V2: SSL")
-        console.log(result);
+        logger("AGENT V2: SSL")
+        logger(result);
     })
     .catch(({message}) => {
-        console.log("Error: ", message)
+        logger("Error: ", message)
     });
+    */
