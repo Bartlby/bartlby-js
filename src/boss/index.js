@@ -1,4 +1,4 @@
-import {debug} from 'debug'
+import { debug } from 'debug'
 const logger = debug("bartlby/Boss")
 
 class Boss {
@@ -8,19 +8,23 @@ class Boss {
   }
   
   work(data) {
-    var self = this;
+    const self = this;
+
     logger(`handle ${data.length} Jobs`)
     
-      var proms = [];
-      data.forEach(function(svc) {
+      const proms = [];
+
+      data.forEach((svc) => {
         proms.push(self.doSingle(svc.service))
       })
-      return Promise.all(proms);
+      
+return Promise.all(proms);
   }
   doSingle(svc) {
     
     return new Promise((resolve, reject) => {
-      var ts = Math.floor(Date.now() / 1000);
+      const ts = Math.floor(Date.now() / 1000);
+
       svc.last.check = ts;
       //FIXME check if notification and stuff
       resolve(svc)
