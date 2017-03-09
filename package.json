@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "babel-node test.js --presets es2015,stage-2",
-    "testmon": "nodemon src/test.js --exec babel-node --presets es2015,stage-2",
+    "testmon": "DEBUG=bartlby* nodemon -w src --exec babel-node --presets es2015,stage-2 src",
     "build": "babel src -d dist --presets es2015,stage-2",
-    "testbuild": "node dist/test.js"
+    "testbuild": "node dist"
   },
   "author": "",
   "license": "ISC",
