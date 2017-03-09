@@ -19,6 +19,7 @@
     "buffer-crc32": "^0.2.13",
     "commander": "^2.9.0",
     "debug": "^2.6.1",
+    "mongodb": "^2.2.24",
     "struct": "0.0.11"
   },
   "devDependencies": {

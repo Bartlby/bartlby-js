@@ -16,8 +16,8 @@ class Bartlby {
   }
   start() {
     logger("Bartlby Init1")
-    const boss = new Boss();
-    const sched = new Scheduler(boss);
+    this.boss = new Boss();
+    this.sched = new Scheduler(this.boss);
   }
 }
 export default Bartlby;
