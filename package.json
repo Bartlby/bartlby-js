@@ -2,16 +2,16 @@
   "name": "bartlby",
   "version": "0.0.9",
   "description": "Bartlby System Monitor",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "DEBUG=bartlby* nodemon -w src --exec babel-node --presets es2015,stage-2 src/local_run.js",
-    "build": "babel src -d lib --presets es2015,stage-2",
-    "testbuild": "node lib",
+    "dev": "DEBUG=bartlby* nodemon -w src --exec babel-node --presets es2015,stage-2 src/bin/bartlby.js",
+    "build": "babel src -d dist --presets es2015,stage-2",
+    "testbuild": "node dist",
     "prepublish": "npm run build"
   },
   "bin": {
-    "bartlby-js": "bin/bartlby.js"
+    "bartlby-js": "dist/bin/bartlby.js"
   },
   "author": "",
   "license": "ISC",

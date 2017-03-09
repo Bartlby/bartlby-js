@@ -1,6 +1,5 @@
 #! /usr/bin/env node
-var Bartlby = require("../lib").default
+import Bartlby from '../'
 var bartlby = new Bartlby({});
-
 bartlby.start();
 
