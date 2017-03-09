@@ -1,3 +1,4 @@
+/*eslint new-cap: "off"*/
 import net from 'net';
 import tls from 'tls';
 import constants from 'constants';
@@ -5,7 +6,6 @@ import Struct from 'struct';
 import crc32 from 'buffer-crc32';
 
 let svc = null;
-
 const AgentPacket = Struct().
     word32Ube('crc32_value').
     word16Sle('exit_code').
@@ -14,6 +14,7 @@ const AgentPacket = Struct().
     chars('cmdline', 2048).
     chars('plugin', 2048).
     chars('perf_handler', 1024);
+
 
 const v1 = {
     check(service) {
@@ -36,6 +37,7 @@ return Promise.resolve().
             const OutPacket = AgentPacket;
 
             OutPacket.allocate();
+            /*eslint no-bitwise: "off"*/
             const context = tls.createSecureContext({
                 "secureProtocol": "SSLv23_method",
                 "honorCipherOrder": false,
@@ -47,7 +49,7 @@ return Promise.resolve().
                 "minDHSize": 512,
                 "rejectUnauthorized": false,
                 "secureContext": context
-            }, () => {
+            }, (_) => {
                 const buf = OutPacket.buffer();
 
                 buf.fill(0);
