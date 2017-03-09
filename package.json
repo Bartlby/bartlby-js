@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "DEBUG=bartlby* nodemon -w src --exec babel-node --presets es2015,stage-2 src/bin/bartlby.js",
+    "dev": "DEBUG=bartlby* nodemon -w src --exec babel-node --presets es2015,stage-2 src/bin/bartlby.js --all demo",
     "build": "babel src -d dist --presets es2015,stage-2",
     "testbuild": "node dist",
     "prepublish": "npm run build"
@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "buffer-crc32": "^0.2.13",
+    "commander": "^2.9.0",
     "debug": "^2.6.1",
     "struct": "0.0.11"
   },
