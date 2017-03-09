@@ -1,4 +1,3 @@
-"use strict"
 import net from 'net';
 import tls from 'tls';
 import constants from 'constants';

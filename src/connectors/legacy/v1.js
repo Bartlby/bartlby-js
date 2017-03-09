@@ -1,35 +1,34 @@
-"use strict"
 import net from 'net';
-var svc = null;
+let svc = null;
 const v1 = {
-    check: function(service) {
-        var self = this;
+    check(service) {
+        const self = this;
         svc = service;
         return Promise.resolve()
             .then(self.doCheck)
     },
-    doCheck: function() {
-        return new Promise(function(resolve, reject) {
-            var client = new net.Socket();
-            var bench_start = new Date();
-            var checkResult = {state: -1, output: "", bench: -1}
-            var tcp_out = [];
-            client.connect(svc.server.port, svc.server.ip, function() {
-                client.write(svc.check.plugin + "|" + svc.check.params + "|\n");
+    doCheck() {
+        return new Promise((resolve, reject) => {
+            const client = new net.Socket();
+            const bench_start = new Date();
+            const checkResult = {state: -1, output: "", bench: -1};
+            const tcp_out = [];
+            client.connect(svc.server.port, svc.server.ip, () => {
+                client.write(`${svc.check.plugin}|${svc.check.params}|\n`);
             });
-            client.setTimeout(svc.check.timeout, function() {
+            client.setTimeout(svc.check.timeout, () => {
               reject(new Error("Timeout"));
               client.destroy();
             })
-            client.on('data', function(data) {
+            client.on('data', data => {
                 //Actual Response - support multiline output
-                var resp = data.toString();
+                const resp = data.toString();
                 tcp_out.push(resp.replace(/\n/g, ""));
 
             });
-            client.on('close', function() {
-                var result_found = false;
-                tcp_out.forEach(function(line) {
+            client.on('close', () => {
+                let result_found = false;
+                tcp_out.forEach(line => {
                   if (line.match(/^OS:/)) {
                       //OS Banner
                   } else if (line.match(/^PERF:/)) {
@@ -51,7 +50,7 @@ const v1 = {
                 checkResult.bench = { ms: new Date() - bench_start };
                 resolve(checkResult);
             });
-            client.on('error', function(err) {
+            client.on('error', err => {
                 reject(err);
             });
         })

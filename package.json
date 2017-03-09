@@ -5,16 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node test.js --presets es2015,stage-2",
-    "testmon": "nodemon src/test.js --exec babel-node --presets es2015,stage-2",
+    "start": "babel-node server.js --presets es2015,stage-2",
+    "startmon": "nodemon src/server.js --exec babel-node --presets es2015,stage-2",
     "build": "babel src -d dist --presets es2015,stage-2",
-    "testbuild": "node dist/test.js"
+    "testbuild": "node dist/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "buffer-crc32": "^0.2.13",
-    "struct": "0.0.11"
+    "debug": "^2.6.1",
+    "struct": "0.0.11",
+    "webworker-threads": "^0.7.11"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
